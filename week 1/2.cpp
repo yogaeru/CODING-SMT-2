@@ -1,5 +1,5 @@
 #include <iostream>
-
+// week1
 void addmakanan(std::string namaMakanan[], int n);
 void rendermakanan(std::string namaMakanan[], int n);
 
