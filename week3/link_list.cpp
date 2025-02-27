@@ -1,15 +1,17 @@
 #include <iostream>
 
+template <typename T>
 struct Node
 {
-    int nodeValue;
-    Node *next = nullptr;
+    T nodeValue;
+    Node<T> *next = nullptr;
 };
 
+template <typename T>
 struct singleLinkList
 {
 private:
-    Node *head, *tail, *cur, *newNode;
+    Node<T> *head, *tail;
 
 public:
     singleLinkList()
@@ -18,8 +20,19 @@ public:
         tail = nullptr;
     }
 
-    void add(int data){
-        newNode = new Node();
+    void add(T data)
+    {
+        Node<T> *addNode= new Node();
+        addNode->nodeValue = data;
+        addNode->next = nullptr;
+        if(!=head){
+            head = addNode;
+            tail = addNode;
+        }
+        else{
+            tail->next = addNode;
+            tail = addNode;
+        }
     }
 };
 
