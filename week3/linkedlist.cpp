@@ -65,30 +65,16 @@ public:
     // untuk menambahkan data ke index tertentu
     void insertAt(int index, int data)
     {
-        Node *insertNode = new Node();
+        Node *insertNode = new Node;
         insertNode->nodeValue = data;
         int nodeLength = length();
 
         if (index == 0)
         {
-            // insertNode->next = head;
-            // head = insertNode;
             addFirst(data);
             return;
         }
 
-        // jika index > panjang linked list akan return
-        // if (index > nodeLength)
-        // {
-        //     std::cout << "Index not found!!" << '\n';
-        //     return;
-        // }
-
-        // jika index = panjang node atau index lebih besar dari newNode
-        //  newNode akan ditambahkan stelah elemen terakhir dari panjang Node
-        //  contoh kita punya node 1 2 3 maka panjangnya akan 3 dan kita ingin insert node baru ke index 3
-        //  itu masih bisa juga karena index 3 itu adalah index ke 4 karena index dimulai dari 0
-        //  tapi jika index > nodeLength itu tidak bisa jadi kita kan selalu menambahkanya stelah elemen terakhir
         if (index == nodeLength || index > nodeLength)
         {
             tail->next = insertNode;
@@ -112,10 +98,14 @@ public:
     // DELETE FUNCTION
     void delFirst()
     {
+        int lengthNode = length();
         Node *deleteNode = head;
-        head = deleteNode->next;
+        if (head == tail)
+            tail = nullptr;
+        head = head->next;
         delete deleteNode;
-        return;
+        if (tail == nullptr)
+            std::cout << "Linked List Kosong!!" << '\n';
     }
 
     // untuk menghapus elemen terakhir dari linked list
@@ -131,48 +121,40 @@ public:
         {
             cur = cur->next;
         }
-        delete deleteLast;
 
         tail = cur;
         cur->next = nullptr;
+        delete deleteLast;
     }
 
     // menghapus elemen dari index tertentu
     void deleteAt(int index)
     {
         Node *deleteNode = nullptr;
-        int nodeLength = length();
         Node *cur = head;
+        int nodeLength = length();
         int curIndex = 0;
 
+        // kalau index nya 0, maka hapus headnya
         if (index == 0)
         {
-            deleteNode = head;
-            head = deleteNode->next;
-            delete deleteNode;
+            delFirst();
             return;
         }
-
+        // kalau index = panajgn node
         if (index == nodeLength - 1)
         {
-            deleteNode = tail;
-            while (cur->next != tail)
-            {
-                cur = cur->next;
-            }
-            delete deleteNode;
-
-            tail = cur;
-            cur->next = nullptr;
+            delLast();
             return;
         }
-
-        if (index > nodeLength)
+        // kalau index lebih besar dari panjang node-1
+        if (index > nodeLength - 1)
         {
             std::cout << "Index not found!!" << '\n';
             return;
         }
 
+        //
         while (curIndex < index - 1)
         {
             cur = cur->next;
@@ -209,11 +191,11 @@ int main()
     SingleLinkedList listNilai;
     listNilai.add(900);
     listNilai.add(9001);
-    listNilai.addFirst(911);
-    listNilai.insertAt(0, 10);
-    // listNilai.deleteAt(3);
+    // listNilai.addFirst(911);
+    // listNilai.insertAt(0, 10);
+    // listNilai.deleteAt(2);
     // listNilai.delFirst();
-    // listNilai.delLast();
+    listNilai.delLast();
     std::cout << "Panjang dari node adalah = " << listNilai.length() << '\n';
 
     listNilai.print();
