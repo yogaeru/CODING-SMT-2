@@ -1,4 +1,5 @@
 #include <iostream>
+#include <utility>
 
 struct Node
 {
@@ -31,7 +32,7 @@ public:
         return count;
     }
 
-    void add(std::string data)
+    void add(const std::string &data)
     {
         Node *addNode = new Node;
         addNode->value = data;
@@ -52,7 +53,7 @@ public:
     void addFirst(std::string data)
     {
         Node *firstNode = new Node;
-        firstNode->value = data;
+        firstNode->value = std::move(data);
         if (!head)
         {
             head = firstNode;
@@ -145,10 +146,9 @@ public:
         tail = tail->prev;
         delete tail->next;
         tail->next = nullptr;
-        return;
     }
 
-    void deleteVal(std::string data)
+    void deleteVal(const std::string &data)
     {
         if (!head)
         {
@@ -203,6 +203,15 @@ public:
             }
 
             std::cout << "Value Node saat ini: " << cur->value << " dan Node sebelumnya: " << cur->prev->value << '\n';
+            cur = cur->next;
+        }
+    }
+
+    ~doubleLL() {
+        Node *cur= head;
+
+        while (cur) {
+            delete cur;
             cur = cur->next;
         }
     }
