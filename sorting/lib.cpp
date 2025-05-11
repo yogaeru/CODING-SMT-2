@@ -133,13 +133,14 @@ public:
     void print() const {
         const Node *cur = head;
         while (cur) {
-            std::cout << "Nama: " << cur->value->name << "\n";
-            std::cout << "NIM: " << cur->value->nim << '\n';
-            std::cout << "Gender: " << cur->value->gender << '\n';
-            std::cout << "Nilai Angka " << cur->value->nilaiAngka << '\n';
-            std::cout << "Nilai huruf " << cur->value->nilaiHuruf << '\n';
+            std::cout << cur->value->name << " ";
+            std::cout << cur->value->nim << " ";
+            std::cout << cur->value->gender << " ";
+            std::cout << cur->value->nilaiAngka << " ";
+            std::cout << cur->value->nilaiHuruf << "\n";
             cur = cur->next;
         }
+        std::cout << "\n";
     }
 
     void swapNode(Node *left, Node *right) {
@@ -166,7 +167,7 @@ public:
             Node *tempLeftNext = left->next;
             Node *tempRightPrev = right->prev;
 
-             // Untuk merubah pointer Node sebelumnya dan Node setelahnya
+            // Untuk merubah pointer Node sebelumnya dan Node setelahnya
             if (right->next) { right->next->prev = left; }
             if (left->prev) { left->prev->next = right; }
             if (tempLeftNext) { tempLeftNext->prev = right; }
@@ -290,7 +291,7 @@ public:
                 }
             }
             gap /= 2;
-            print();
+            // print();
         }
     }
 
@@ -300,28 +301,32 @@ public:
         int i = low - 1;
 
         Node *pivot = nodeAt(high, len);
-        Node *nodeI = (i > 0) ? nodeAt(i, len) : nullptr;
-        Node *nodeJ = nodeAt(low, len);
+        Node *nodeI = (i>=0) ? nodeAt(i, len) : nullptr;
+        Node *nodeJ = nullptr;
 
+        std::cout << "pivot: " << pivot->value->name << '\n';
         long long int pivotValue = (data == "nim") ? pivot->value->nim : pivot->value->nilaiAngka;
 
         for (int j = low; j < high; j++) {
-            Node *temp = nodeJ;
+            Node *temp = nodeAt(j, len);
             long long int tempValue = (data == "nim") ? temp->value->nim : temp->value->nilaiAngka;
             if (tempValue <= pivotValue) {
                 i++;
-                if (!nodeI) {
-                    nodeI = head;
-                } else {
-                    nodeI = nodeI->next;
-                }
+                nodeI = nodeAt(i, len);
                 swapNode(nodeI, temp);
             }
-            nodeJ = nodeJ->next;
         }
-
-        nodeI = (nodeI) ? nodeI->next : head;
-        swapNode(nodeI, pivot);
+        Node *temp = (nodeI) ? nodeAt(i+1, len) : head;
+        swapNode(temp, pivot);
+        this->print();
         return i + 1;
+    }
+
+    void quick_sort(const std::string &data, const int low, const int high) {
+        if (low < high) {
+            int pi = partition(low, high, data);
+            quick_sort(data, low, pi - 1);
+            quick_sort(data, pi + 1, high);
+        }
     }
 };

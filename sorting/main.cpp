@@ -8,7 +8,7 @@ void mainMenu(linked_list *a);
 void statistik(const linked_list *a);
 
 int main() {
-    auto data = new linked_list();
+    linked_list *data = new linked_list();
     mainMenu(data);
 
     delete data;
@@ -17,6 +17,7 @@ int main() {
 
 
 void mainMenu(linked_list *a) {
+    // std::cout << "Panjang Node : " << leng << '\n';
     std::string temp;
     char choice;
     while (true) {
@@ -46,6 +47,7 @@ void mainMenu(linked_list *a) {
                 a->print();
                 std::cout << "Masukan apa saja untuk kembali...";
                 std::cin >> temp;
+                // system("cls");
                 break;
             case '3':
                 std::cout << "Statisti mahasisqa\n";
@@ -74,6 +76,11 @@ void mainMenu(linked_list *a) {
             case '9':
                 a->shell_sort("nilai");
                 break;
+            case '0':{
+                int leng = a->length() - 1;
+                a->quick_sort("nilai", 0, leng);
+                break;
+            }
             default:
                 std::cout << "Pilihan tidak ada!!!!!!!\n";
                 break;

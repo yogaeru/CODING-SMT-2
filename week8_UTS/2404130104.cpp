@@ -2,7 +2,7 @@
 #include <string>
 
 struct Mahasiswa {
-    std::string nama;
+    std::string name;
     int long long nim;
     std::string gender;
     std::string nilaiHuruf;
@@ -10,9 +10,9 @@ struct Mahasiswa {
 };
 
 struct Node {
+    Mahasiswa *value = nullptr;
     Node *next = nullptr;
     Node *prev = nullptr;
-    Mahasiswa *value{};
 };
 
 struct linked_list {
@@ -23,6 +23,14 @@ public:
     linked_list() {
         head = nullptr;
         tail = nullptr;
+    }
+    ~linked_list() {
+        Node *cur = head;
+        while (cur) {
+            Node *del = cur;
+            cur = cur->next;
+            delete del;
+        }
     }
 
     [[nodiscard]] int length() const {
@@ -58,7 +66,7 @@ public:
                       const std::string &huruf,
                       const int angka) {
         Node *mhs = new Node();
-        mhs->value = new Mahasiswa({nama, nim, gender, huruf, angka});
+        mhs->value = new Mahasiswa{nama, nim, gender, huruf, angka};
 
         if (!head) {
             head = mhs;
@@ -83,7 +91,7 @@ public:
 
         if (found) {
             std::cout << "data ditemukan\n";
-            std::cout << "Nama: " << cur->value->nama << "\n";
+            std::cout << "Nama: " << cur->value->name << "\n";
             std::cout << "NIM: " << cur->value->nim << '\n';
             std::cout << "Gender: " << cur->value->gender << '\n';
             std::cout << "Nilai Angka " << cur->value->nilaiAngka << '\n';
@@ -134,7 +142,7 @@ public:
     void print() const {
         const Node *cur = head;
         while (cur) {
-            std::cout << "Nama: " << cur->value->nama << "\n";
+            std::cout << "Nama: " << cur->value->name << "\n";
             std::cout << "NIM: " << cur->value->nim << '\n';
             std::cout << "Gender: " << cur->value->gender << '\n';
             std::cout << "Nilai Angka " << cur->value->nilaiAngka << '\n';
@@ -142,6 +150,8 @@ public:
             cur = cur->next;
         }
     }
+
+
 };
 
 
@@ -217,7 +227,6 @@ void mainMenu() {
 }
 
 void nambah() {
-    // linked_list a;
     std::string nama, gender;
     long long int nim;
     std::string huruf;
