@@ -47,7 +47,7 @@ void mainMenu(linked_list *a) {
                 a->print();
                 std::cout << "Masukan apa saja untuk kembali...";
                 std::cin >> temp;
-                // system("cls");
+            // system("cls");
                 break;
             case '3':
                 std::cout << "Statisti mahasisqa\n";
@@ -76,13 +76,16 @@ void mainMenu(linked_list *a) {
             case '9':
                 a->shell_sort("nilai");
                 break;
-            case '0':{
+            case '0': {
                 int leng = a->length() - 1;
                 a->quick_sort("nilai", 0, leng);
                 break;
             }
-            default:
-                std::cout << "Pilihan tidak ada!!!!!!!\n";
+            case 'a':
+                a->insertion_sort("nilai");
+                break;
+        default:
+            std::cout << "Pilihan tidak ada!!!!!!!\n";
                 break;
         }
     }

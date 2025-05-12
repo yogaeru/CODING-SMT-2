@@ -265,18 +265,40 @@ public:
         return cur;
     }
 
+    void insertion_sort(const std::string &data) {
+        int len = this->length(); // panjang Node
+        Node *right = head->next; //Node kanan atau I
+        Node *left = nullptr; //Node kiri atau J
+
+
+        for (int i = 1; i < len; i++) {
+            //value Node kanan
+            Node *key = right;
+            long long int keyVal = (data == "nim") ? key->value->nim : key->value->nilaiAngka;
+
+            right = right->next;
+            left = key->prev;
+
+            while (left) {
+                long long int leftVal = (data == "nim") ? left->value->nim : left->value->nilaiAngka;
+                if (leftVal > keyVal) {
+                    Node *temp = left;
+                    left = left->prev;
+                    swapNode(temp, key);
+                } else { break; }
+            }
+            left= (left) ? left->next : head;
+            swapNode(left, key);
+        }
+    }
+
     void shell_sort(const std::string &data) {
         int len = this->length();
         int gap = len / 2;
 
-        // ciura sequence
-        // int gap_container[] = {701, 301, 132, 57, 23, 10, 4, 1};
-
-        // for (int gap: gap_container)
         while (gap > 0) {
             for (int i = gap; i < len; i++) {
                 int j = i;
-                // Node *temp = nodeAt(i, len);
                 while (j >= gap) {
                     Node *left = this->nodeAt(j - gap, len);
                     Node *right = this->nodeAt(j, len);
@@ -291,7 +313,6 @@ public:
                 }
             }
             gap /= 2;
-            // print();
         }
     }
 
@@ -300,33 +321,44 @@ public:
         int len = this->length();
         int i = low - 1;
 
-        Node *pivot = nodeAt(high, len);
-        Node *nodeI = (i>=0) ? nodeAt(i, len) : nullptr;
-        Node *nodeJ = nullptr;
-
-        std::cout << "pivot: " << pivot->value->name << '\n';
+        Node *pivot = this->nodeAt(high, len);
+        Node *nodeI = (i >= 0) ? this->nodeAt(i, len) : nullptr;
+        // Node *nodeJ = nullptr;
         long long int pivotValue = (data == "nim") ? pivot->value->nim : pivot->value->nilaiAngka;
 
         for (int j = low; j < high; j++) {
-            Node *temp = nodeAt(j, len);
+            Node *temp = this->nodeAt(j, len);
             long long int tempValue = (data == "nim") ? temp->value->nim : temp->value->nilaiAngka;
             if (tempValue <= pivotValue) {
                 i++;
-                nodeI = nodeAt(i, len);
-                swapNode(nodeI, temp);
+                nodeI = this->nodeAt(i, len);
+                this->swapNode(nodeI, temp);
             }
         }
-        Node *temp = (nodeI) ? nodeAt(i+1, len) : head;
-        swapNode(temp, pivot);
-        this->print();
+        Node *temp = (nodeI) ? this->nodeAt(i + 1, len) : head;
+        this->swapNode(temp, pivot);
         return i + 1;
     }
 
     void quick_sort(const std::string &data, const int low, const int high) {
         if (low < high) {
-            int pi = partition(low, high, data);
+            int pi = this->partition(low, high, data);
             quick_sort(data, low, pi - 1);
             quick_sort(data, pi + 1, high);
+        }
+    }
+
+    void merge(const std::string &data, int start, int mid, int end) {
+        int start2 = mid + 1;
+    }
+
+    void merge_sort(const std::string &data, int start, int end) {
+        if (start < end) {
+            int mid = start + (end - start) / 2;
+
+            merge_sort(data, start, mid);
+            merge_sort(data, mid + 1, end);
+            merge(data, start, mid, end);
         }
     }
 };
