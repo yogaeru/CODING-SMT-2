@@ -84,6 +84,9 @@ void mainMenu(linked_list *a) {
             case 'a':
                 a->insertion_sort("nilai");
                 break;
+            case 'b':
+                a->MergeSort("nilai");
+                break;
         default:
             std::cout << "Pilihan tidak ada!!!!!!!\n";
                 break;

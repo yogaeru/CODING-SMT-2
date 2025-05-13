@@ -284,11 +284,11 @@ public:
                 if (leftVal > keyVal) {
                     Node *temp = left;
                     left = left->prev;
-                    swapNode(temp, key);
+                    this->swapNode(temp, key);
                 } else { break; }
             }
-            left= (left) ? left->next : head;
-            swapNode(left, key);
+            left = (left) ? left->next : head;
+            this->swapNode(left, key);
         }
     }
 
@@ -348,17 +348,57 @@ public:
         }
     }
 
-    void merge(const std::string &data, int start, int mid, int end) {
-        int start2 = mid + 1;
+    void inPlaceMerge(const std::string &data, int start, int mid, int end) {
+        const int len = this->length(); // panjang list
+        int start2 = mid + 1; //posisi Node kanan
+        Node *left = this->nodeAt(start, len); // Node kiri atau start
+        Node *right = this->nodeAt( start2, len); //Node kanan atau mid + 1
+        Node *midle = this->nodeAt(mid, len); //Node tengah
+
+        while (start <= mid && start2 <= end) {
+            Node *nodeStart = left;
+            Node *nodeStart2 = right;
+            Node *nodeMid = midle;
+
+            long long int startVal = (data == "nim") ? nodeStart->value->nim : nodeStart->value->nilaiAngka;
+            long long int start2Val = (data == "nim") ? nodeStart2->value->nim : nodeStart2->value->nilaiAngka;
+            long long int midVal = (data == "nim") ? nodeMid->value->nim : nodeMid->value->nilaiAngka;
+
+            if (midVal <= start2Val) {
+                std::cout << "data sudah terurut\n";
+                return;
+            }
+
+            if (startVal <= start2Val) {
+                left = left->next;
+                start++;
+            } else {
+                int index = start2;
+
+                while (index != start) {
+                    this->swapNode(nodeStart2->prev, nodeStart2);
+                    index--;
+                }
+                start++;
+                start2++;
+                mid++;
+                right = midle->next;
+            }
+        }
     }
 
     void merge_sort(const std::string &data, int start, int end) {
         if (start < end) {
-            int mid = start + (end - start) / 2;
+            int mid = start + (end - start) / 2; // menentukan posisi tengah
 
             merge_sort(data, start, mid);
             merge_sort(data, mid + 1, end);
-            merge(data, start, mid, end);
+            inPlaceMerge(data, start, mid, end);
         }
+    }
+
+    void MergeSort(const std::string &data) {
+        int len = this->length();
+        merge_sort(data, 0, len - 1);
     }
 };
