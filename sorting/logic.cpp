@@ -1,32 +1,28 @@
 #include <iostream>
 using namespace std;
 
-// function to swap elements
-void swap(int *a, int *b) {
-    int t = *a;
-    *a = *b;
-    *b = t;
+void swapVal(int &a, int &b) {
+    int t = a;
+    a = b;
+    b = t;
 }
 
-// function to print the array
 void printArray(int array[], int size) {
-    int i;
-    for (i = 0; i < size; i++)
+    for (int i = 0; i < size; i++)
         cout << array[i] << " ";
     cout << endl;
 }
 
-// function to rearrange array (find the partition point)
 int partition(int array[], int low, int high) {
     int pivot = array[high];
     int i = (low - 1);
     for (int j = low; j < high; j++) {
         if (array[j] <= pivot) {
             i++;
-            swap(&array[i], &array[j]);
+            swapVal(array[i], array[j]);
         }
     }
-    swap(&array[i + 1], &array[high]);
+    swapVal(array[i + 1], array[high]);
 
     return (i + 1);
 }
@@ -54,7 +50,7 @@ void merge(int array[], int start, int mid, int end) {
             int index = start2;
 
             while (index != start) {
-                array[index] = array[index - 1];
+                swapVal(array[index], array[index - 1]);
                 index--;
             }
             array[start] = value;
@@ -79,14 +75,18 @@ void start_merge(int array[], int len) {
     merge_sort(array, 0, len - 1);
 }
 
+
 int main() {
     int data[] = {5, 4, 7, 8, 2};
     int n = sizeof(data) / sizeof(data[0]);
 
     cout << "Unsorted Array: \n";
     printArray(data, n);
-    // int len = sizeof(array) / sizeof(array[0]);
 
+    //quicksort
+    // quickSort(data, 0, n - 1);
+
+    //mergesort
     start_merge(data, n);
 
     printArray(data, n);
