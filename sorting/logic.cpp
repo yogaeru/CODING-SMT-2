@@ -1,5 +1,3 @@
-// Quick sort in C++
-
 #include <iostream>
 using namespace std;
 
@@ -20,58 +18,77 @@ void printArray(int array[], int size) {
 
 // function to rearrange array (find the partition point)
 int partition(int array[], int low, int high) {
-
-    // select the rightmost element as pivot
     int pivot = array[high];
-
-    // pointer for greater element
     int i = (low - 1);
-    // traverse each element of the array
-    // compare them with the pivot
     for (int j = low; j < high; j++) {
         if (array[j] <= pivot) {
-            // if element smaller than pivot is found
-            // swap it with the greater element pointed by i
             i++;
-            // swap element at i with element at j
             swap(&array[i], &array[j]);
         }
     }
-
-    // swap pivot with the greater element at i
     swap(&array[i + 1], &array[high]);
 
-    // return the partition point
     return (i + 1);
 }
 
 void quickSort(int array[], int low, int high) {
     if (low < high) {
-
-        // find the pivot element such that
-        // elements smaller than pivot are on left of pivot
-        // elements greater than pivot are on righ of pivot
         int pi = partition(array, low, high);
-
-        // recursive call on the left of pivot
         quickSort(array, low, pi - 1);
-
-        // recursive call on the right of pivot
         quickSort(array, pi + 1, high);
     }
 }
 
-// Driver code
+void merge(int array[], int start, int mid, int end) {
+    int start2 = mid + 1;
+
+    if (array[mid] <= array[start2]) {
+        return;
+    }
+
+    while (start <= mid && start2 <= end) {
+        if (array[start] <= array[start2]) {
+            start++;
+        } else {
+            int value = array[start2];
+            int index = start2;
+
+            while (index != start) {
+                array[index] = array[index - 1];
+                index--;
+            }
+            array[start] = value;
+            start++;
+            start2++;
+            mid++;
+        }
+    }
+}
+
+void merge_sort(int array[], int start, int end) {
+    if (start < end) {
+        int mid = start + (end - start) / 2;
+
+        merge_sort(array, start, mid);
+        merge_sort(array, mid + 1, end);
+        merge(array, start, mid, end);
+    }
+}
+
+void start_merge(int array[], int len) {
+    merge_sort(array, 0, len - 1);
+}
+
 int main() {
-    int data[] = {5,4,7,8,2};
+    int data[] = {5, 4, 7, 8, 2};
     int n = sizeof(data) / sizeof(data[0]);
 
     cout << "Unsorted Array: \n";
     printArray(data, n);
+    // int len = sizeof(array) / sizeof(array[0]);
 
-    // perform quicksort on data
-    quickSort(data, 0, n - 1);
+    start_merge(data, n);
 
     printArray(data, n);
     cout << "Sorted array in ascending order: \n";
-  }
+}

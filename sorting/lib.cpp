@@ -323,7 +323,6 @@ public:
 
         Node *pivot = this->nodeAt(high, len);
         Node *nodeI = (i >= 0) ? this->nodeAt(i, len) : nullptr;
-        // Node *nodeJ = nullptr;
         long long int pivotValue = (data == "nim") ? pivot->value->nim : pivot->value->nilaiAngka;
 
         for (int j = low; j < high; j++) {
