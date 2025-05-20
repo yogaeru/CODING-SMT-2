@@ -12,7 +12,7 @@ int main()
     {
         string temp;
         list *data = new list();
-        forAdd(data, 100000);
+        forAdd(data, 1000);
         // data->print();
 
         mainMenu(data);

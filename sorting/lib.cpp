@@ -396,7 +396,7 @@ public:
         }
     }
 
-    void MergeSort(const std::string &data) {
+    void MergeSort(const std::string &data = "nilai") {
         int len = this->length();
         merge_sort(data, 0, len - 1);
     }
