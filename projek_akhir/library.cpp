@@ -3,12 +3,12 @@ using std::string;
 
 struct Pasien {
     string nama, penyakit;
-    int umur, nomor;
+    int umur, nomor, index;
 
     Pasien(const string &nama,
            const int umur,
            const string &penyakit,
-           const int nomor) : nama(nama), penyakit(penyakit), umur(umur), nomor(nomor) {
+           const int nomor, const int abjad) : nama(nama), penyakit(penyakit), umur(umur), nomor(nomor), index(abjad) {
     }
 };
 
@@ -47,12 +47,24 @@ public:
         return count;
     }
 
+    int getAbjad(char abj) {
+        string &data = this->abjad;
+        int i;
+        for (i = 0; i < 26; i++) {
+            if (data[i] == abj) {
+                return i;
+            }
+        }
+        return i;
+    }
+
     void addPasien(const string &nama,
                    const int umur,
                    const string &penyakit,
                    const int nomor) {
         Node *pasien = new Node();
-        pasien->value = new Pasien(nama, umur, penyakit, nomor);
+        int indexAbj = this->getAbjad(tolower(nama[0]));
+        pasien->value = new Pasien(nama, umur, penyakit, nomor, indexAbj);
 
         if (!head) {
             head = pasien;
@@ -136,18 +148,18 @@ public:
             right = minimum->next;
 
             //menentukan data yang akan di sorting
-            if (data == "nama") {
-                minVal = minimum->value->nomor;
-                rightVal = right->value->nomor;
-            } else if (data == "umur") {
-                minVal = minimum->value->umur;
-                rightVal = right->value->umur;
-            } else {
-                minVal = minimum->value->nomor;
-                rightVal = right->value->nomor;
-            }
 
             while (right) {
+                if (data == "nama") {
+                    minVal = minimum->value->index;
+                    rightVal = right->value->index;
+                } else if (data == "umur") {
+                    minVal = minimum->value->umur;
+                    rightVal = right->value->umur;
+                } else {
+                    minVal = minimum->value->nomor;
+                    rightVal = right->value->nomor;
+                }
                 if (minVal > rightVal) {
                     minimum = right;
                 }
@@ -167,6 +179,40 @@ public:
     /*  <================================= ALGORITMA SEARCHING    =====================================> */
     /*  <================================= ALGORITMA SEARCHING    =====================================> */
 
+    void cari_nama(const string &type, const string &data) {
+        int i;
+        Node *cur = head;
+        while (cur) {
+            string &value = (type == "nama") ? cur->value->nama : cur->value->penyakit;
+            if (value == data) {
+                std::cout << "<=== DATA  DITEMUKAN!!! ===>\n";
+                std::cout << "Nama Pasien : " << cur->value->nama << '\n';
+                std::cout << "Umur Pasien : " << cur->value->umur << '\n';
+                std::cout << "Penyakit Pasien : " << cur->value->penyakit << '\n';
+                std::cout << "Nomor Pasien : " << cur->value->nomor << '\n';
+                std::cout << "====================================\n";
+                return;
+            }
+            cur = cur->next;
+        }
+        std::cout << "Data Pasien Tidak Ditemukan!!!\n";
+    }
 
-
+    void cari_data(const string &type, const int value) {
+        Node *cur = head;
+        while (cur) {
+            int data = (type == "umur") ? cur->value->umur : cur->value->nomor;
+            if (data == value) {
+                std::cout << "<=== DATA  DITEMUKAN!!! ===>\n";
+                std::cout << "Nama Pasien : " << cur->value->nama << '\n';
+                std::cout << "Umur Pasien : " << cur->value->umur << '\n';
+                std::cout << "Penyakit Pasien : " << cur->value->penyakit << '\n';
+                std::cout << "Nomor Pasien : " << cur->value->nomor << '\n';
+                std::cout << "====================================\n";
+                return;
+            }
+            cur = cur->next;
+        }
+        std::cout << "Data Pasien Tidak Ditemukan!!!\n";
+    }
 };

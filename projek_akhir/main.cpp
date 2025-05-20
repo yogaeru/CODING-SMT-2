@@ -32,6 +32,7 @@ void mainMenu(database *a) {
         std::cout << "6. KELUAR\n";
         std::cout << "Masukkan pilihan anda : ";
         std::cin >> pilihan;
+        std::cin.ignore();
 
         switch (pilihan) {
             case 1:
@@ -41,10 +42,11 @@ void mainMenu(database *a) {
                 a->print();
                 break;
             case 3:
-                std::cout << "BELUNM ADS FITUR!!\n";
+                menuSorting(a);
                 break;
             case 4:
-                std::cout << "BELUNM ADS FITUR!!\n";
+                menuSearch(a);
+                // std::cout << "BELUNM ADS FITUR!!\n";
                 break;
             case 5:
                 std::cout << "BELUNM ADS FITUR!!\n";
@@ -74,7 +76,7 @@ void menuSorting(database *a) {
             a->urutkan_data("nama");
             break;
         case 2:
-            a->urutkan_data("nomor");
+            a->urutkan_data();
             break ;
         case 3:
             a->urutkan_data("umur");
@@ -88,22 +90,53 @@ void menuSorting(database *a) {
 
 void nambahPasien(database *a) {
     string nama, penyakit;
+    int umur, nomor;
     char temp;
     while (true) {
-        int umur, nomor;
         std::cout << "Masukkan nama pasien : ";
-        std::cin >> nama;
+        // std::cin.ignore();
+        std::getline(std::cin, nama);
         std::cout << "Masukkan umur pasien : ";
         std::cin >> umur;
         std::cin.ignore();
         std::cout << "Masukkan penyakit pasien : ";
-        std::cin >> penyakit;
+        std::getline(std::cin, penyakit);
         std::cout << "Masukkan nomor pasien : ";
         std::cin >> nomor;
+        std::cin.ignore();
+
         a->addPasien(nama, umur, penyakit, nomor);
         std::cout << "Data pasien berhasil ditambahkan\n";
         std::cout << "Tambahkan data pasien lagi ? (y/n) : ";
         std::cin >> temp;
+        std::cin.ignore();
         if (tolower(temp) != 'y') { break; }
+    }
+}
+
+void menuSearch(database *a) {
+    int pilihan;
+    while (true) {
+        std::cout << "<== MENU SEARCH ==>\n";
+        std::cout << "1. Cari Nama Pasien\n";
+        std::cout << "2. Kembali\n";
+        std::cout << "Masukkan pilihan anda (-1 untuk kembali) : ";
+        std::cin >> pilihan;
+        std::cin.ignore();
+
+        switch (pilihan) {
+            case 1: {
+                std::cout << "Masukkan nama pasien yang ingin dicari : ";
+                std::string nama;
+                std::cin >> nama;
+                a->cari_nama("nama", nama);
+                break;
+            }
+            case 2:
+                return;
+            default:
+                std::cout << "Pilihan tidak tersedia\n";
+                break;
+        }
     }
 }
