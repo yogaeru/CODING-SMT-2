@@ -128,8 +128,8 @@ public:
                 Node *tempRight = right;
 
                 //cek user ingin cari data bedasarkan apa
-                long long int leftValue = tempLeft->value;
-                long long int rightValue = tempRight->value;
+                int leftValue = tempLeft->value;
+                int rightValue = tempRight->value;
 
                 //jika value Node kiri lebih besar tukar posisinya
                 if (leftValue > rightValue) {
@@ -140,14 +140,6 @@ public:
                     left = left->next;
                     right = right->next;
                 }
-                //kita ubah posisi Node kiri dan kanan
-                // left = (swapped) ? tempLeft : tempLeft->next;
-                // right = (swapped) ? tempLeft->next : right->next;
-
-                // if (!right) {
-                //     std::cout << "data sudah terurut\n";
-                //     return;
-                // }
             }
             len--;
         }
@@ -190,7 +182,6 @@ public:
         int len = this->length(); // panjang Node
         Node *right = head->next; //Node kanan atau I
         Node *left = nullptr; //Node kiri atau J
-
 
         for (int i = 1; i < len; i++) {
             //value Node kanan
@@ -311,7 +302,6 @@ public:
         if (start < end) {
             int mid = start + (end - start) / 2; // menentukan posisi tengah
             // int len = this->length();
-
             merge_sort(start, mid, len);
             merge_sort(mid + 1, end, len);
             inPlaceMerge(start, mid, end, len);

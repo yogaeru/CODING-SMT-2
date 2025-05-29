@@ -8,7 +8,8 @@ struct Pasien {
     Pasien(const string &nama,
            const int umur,
            const string &penyakit,
-           const int nomor, const int abjad) : nama(nama), penyakit(penyakit), umur(umur), nomor(nomor), index(abjad) {
+           const int nomor,
+           const int abjad) : nama(nama), penyakit(penyakit), umur(umur), nomor(nomor), index(abjad) {
     }
 };
 
@@ -18,7 +19,7 @@ struct Node {
     Pasien *value = nullptr;
 };
 
-class database {
+struct database {
 private:
     Node *head, *tail;
     string abjad = "abcdefghijklmnopqrstuvwxyz";
@@ -147,9 +148,8 @@ public:
             minimum = left;
             right = minimum->next;
 
-            //menentukan data yang akan di sorting
-
             while (right) {
+                //menentukan data yang akan di sorting
                 if (data == "nama") {
                     minVal = minimum->value->index;
                     rightVal = right->value->index;
@@ -160,19 +160,106 @@ public:
                     minVal = minimum->value->nomor;
                     rightVal = right->value->nomor;
                 }
+
+                //jika Node kanan lebih kecil minimum pindahkan ke kanan
                 if (minVal > rightVal) {
                     minimum = right;
                 }
                 right = right->next;
-            }
+            }  //end while loop
 
             temp = left->next;
             if (minimum != left) {
                 this->swapNode(left, minimum);
             }
             left = temp;
-        }
+        } //end for loop
         std::cout << "Data Pasien Sudah Diurutkan!!!\n";
+    }
+
+    void bubble_sort(const string &data = "nomor") {
+        int len = this->length(); //menentukan panjang Node
+        bool swapped = true;
+
+        while (swapped) {
+            swapped = false;
+            Node *left = head;
+            Node *right = left->next;
+
+            for (int step = 0; step < len - 1; step++) {
+                Node *tempLeft = left;
+                Node *tempRight = right;
+
+                //cek user ingin cari data bedasarkan apa
+                int valueKanan, valueKiri;
+                if (data == "nama") {
+                    valueKanan = tempRight->value->index;
+                    valueKiri = tempLeft->value->index;
+                }
+                else if (data == "umur") {
+                    valueKanan = tempRight->value->umur;
+                    valueKiri = tempLeft->value->umur;
+                }
+                else {
+                    valueKanan = tempRight->value->nomor;
+                    valueKiri = tempLeft->value->nomor;
+                }
+                //jika value Node kiri lebih besar tukar posisinya
+                if (valueKiri > valueKanan) {
+                    this->swapNode(tempLeft, tempRight);
+                    swapped = true;
+                    right = tempLeft->next;
+                } else {
+                    left = left->next;
+                    right = right->next;
+                }
+            }
+            len--;
+        }
+        std::cout << "data sudah terurut\n";
+    }
+
+    void insertion_sort(const string& data = "nomor") {
+        int len = this->length(); // panjang Node
+        Node *right = head->next; //Node kanan atau I
+        Node *left = nullptr; //Node kiri atau J
+
+        for (int i = 1; i < len; i++) {
+            //value Node kanan
+            Node *key = right;
+            int keyVal;
+            if (data == "nama") {
+                keyVal = key->value->index;
+            }
+            else if (data == "umur") {
+                keyVal = key->value->umur;
+            }
+            else { keyVal = key->value->nomor;}
+
+            right = right->next;
+            left = key->prev;
+
+            while (left) {
+                int leftVal;
+                if (data == "nama") {
+                    leftVal = left->value->index;
+                }
+                else if (data == "umur") {
+                    leftVal = left->value->umur;
+                }
+                else {
+                    leftVal = left->value->nomor;
+                }
+
+                if (leftVal > keyVal) {
+                    Node *temp = left;
+                    left = left->prev;
+                    this->swapNode(temp, key);
+                } else { break; }
+            }
+            left = (left) ? left->next: head;
+            this->swapNode(left, key);
+        }
     }
 
     /*  <================================= ALGORITMA SEARCHING    =====================================> */
@@ -209,7 +296,6 @@ public:
                 std::cout << "Penyakit Pasien : " << cur->value->penyakit << '\n';
                 std::cout << "Nomor Pasien : " << cur->value->nomor << '\n';
                 std::cout << "====================================\n";
-                return;
             }
             cur = cur->next;
         }
