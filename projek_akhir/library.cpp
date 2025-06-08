@@ -77,26 +77,32 @@ public:
         }
     }
 
-    void print() const {
-        Node *cur = head;
-        while (cur) {
-            std::cout << cur->value->nama << ' ';
-            std::cout << cur->value->umur << ' ';
-            std::cout << cur->value->penyakit << ' ';
-            std::cout << cur->value->nomor << '\n';
-            cur = cur->next;
+    void print(Node *cur = nullptr) {
+        if (!cur) cur = head;
+        std::cout << cur->value->nama << ' ';
+        std::cout << cur->value->umur << ' ';
+        std::cout << cur->value->penyakit << ' ';
+        std::cout << cur->value->nomor << '\n';
+
+        // rekursif
+        if (cur->next) {
+            print(cur->next);
         }
     }
-
 
     /*  <================================= ALGORITMA SORTING    =====================================> */
     /*  <================================= ALGORITMA SORTING    =====================================> */
     /*  <================================= ALGORITMA SORTING    =====================================> */
 
     void swapNode(Node *left, Node *right) {
-        if (left == right) return;
-        if (left == head) { head = right; }
-        if (right == tail) { tail = left; }
+        if (left == right)
+            return;
+        if (left == head) {
+            head = right;
+        }
+        if (right == tail) {
+            tail = left;
+        }
 
         if (left->next == right) {
             if (right->next) {
@@ -118,10 +124,18 @@ public:
             Node *tempRightPrev = right->prev;
 
             // Untuk merubah pointer Node sebelumnya dan Node setelahnya
-            if (right->next) { right->next->prev = left; }
-            if (left->prev) { left->prev->next = right; }
-            if (tempLeftNext) { tempLeftNext->prev = right; }
-            if (tempRightPrev) { tempRightPrev->next = left; }
+            if (right->next) {
+                right->next->prev = left;
+            }
+            if (left->prev) {
+                left->prev->next = right;
+            }
+            if (tempLeftNext) {
+                tempLeftNext->prev = right;
+            }
+            if (tempRightPrev) {
+                tempRightPrev->next = left;
+            }
 
             // menukar Node saat ini
             right->prev = left->prev;
@@ -130,13 +144,18 @@ public:
             left->prev = tempRightPrev;
         }
 
-        if (right == head) { right->prev = nullptr; }
-        if (left == tail) { left->next = nullptr; }
+        if (right == head) {
+            right->prev = nullptr;
+        }
+        if (left == tail) {
+            left->next = nullptr;
+        }
     }
 
-    //SELECTION SORT
+    // <============================ SELECTION SORT ================================>
+    // <============================ SELECTION SORT ================================>
     void urutkan_data(const string &data = "nomor") {
-        int len = this->length(); //menentukan panjang Node
+        int len = this->length(); // menentukan panjang Node
 
         Node *left = head;
         Node *right = nullptr;
@@ -149,7 +168,7 @@ public:
             right = minimum->next;
 
             while (right) {
-                //menentukan data yang akan di sorting
+                // menentukan data yang akan di sorting
                 if (data == "nama") {
                     minVal = minimum->value->index;
                     rightVal = right->value->index;
@@ -161,24 +180,27 @@ public:
                     rightVal = right->value->nomor;
                 }
 
-                //jika Node kanan lebih kecil minimum pindahkan ke kanan
+                // jika Node kanan lebih kecil minimum pindahkan ke kanan
                 if (minVal > rightVal) {
                     minimum = right;
                 }
                 right = right->next;
-            }  //end while loop
+            } // end while loop
 
             temp = left->next;
             if (minimum != left) {
                 this->swapNode(left, minimum);
             }
             left = temp;
-        } //end for loop
+        } // end for loop
         std::cout << "Data Pasien Sudah Diurutkan!!!\n";
     }
 
+    // <======================= BUBBLE SORT =====================>
+    // <======================= BUBBLE SORT =====================>
+
     void bubble_sort(const string &data = "nomor") {
-        int len = this->length(); //menentukan panjang Node
+        int len = this->length(); // menentukan panjang Node
         bool swapped = true;
 
         while (swapped) {
@@ -190,21 +212,20 @@ public:
                 Node *tempLeft = left;
                 Node *tempRight = right;
 
-                //cek user ingin cari data bedasarkan apa
+                // cek user ingin cari data bedasarkan apa
                 int valueKanan, valueKiri;
                 if (data == "nama") {
                     valueKanan = tempRight->value->index;
                     valueKiri = tempLeft->value->index;
-                }
-                else if (data == "umur") {
+                } else if (data == "umur") {
                     valueKanan = tempRight->value->umur;
                     valueKiri = tempLeft->value->umur;
-                }
-                else {
+                } else {
                     valueKanan = tempRight->value->nomor;
                     valueKiri = tempLeft->value->nomor;
                 }
-                //jika value Node kiri lebih besar tukar posisinya
+
+                // jika value Node kiri lebih besar tukar posisinya
                 if (valueKiri > valueKanan) {
                     this->swapNode(tempLeft, tempRight);
                     swapped = true;
@@ -219,45 +240,59 @@ public:
         std::cout << "data sudah terurut\n";
     }
 
-    void insertion_sort(const string& data = "nomor") {
+    // <======================= INSERTION SORT =====================>
+    // <======================= INSERTION SORT =====================>
+    void insertion_sort(const string &data = "nomor") {
         int len = this->length(); // panjang Node
-        Node *right = head->next; //Node kanan atau I
-        Node *left = nullptr; //Node kiri atau J
+        Node *right = head->next; // Node kanan atau I
+        Node *left = nullptr; // Node kiri atau J
 
         for (int i = 1; i < len; i++) {
-            //value Node kanan
+            // value Node kanan
             Node *key = right;
             int keyVal;
+
             if (data == "nama") {
                 keyVal = key->value->index;
-            }
-            else if (data == "umur") {
+            } else if (data == "umur") {
                 keyVal = key->value->umur;
+            } else {
+                keyVal = key->value->nomor;
             }
-            else { keyVal = key->value->nomor;}
 
             right = right->next;
             left = key->prev;
 
             while (left) {
                 int leftVal;
-                if (data == "nama") {
-                    leftVal = left->value->index;
-                }
-                else if (data == "umur") {
-                    leftVal = left->value->umur;
-                }
-                else {
-                    leftVal = left->value->nomor;
-                }
 
+                // MEGAMBIL DATA BERDASARKAN YANG DICARI
+                if (data == "nama")
+                    leftVal = left->value->index;
+                else if (data == "umur")
+                    leftVal = left->value->umur;
+                else
+                    leftVal = left->value->nomor;
+
+                /*
+                    MENGECEK APAKAH VALUE NODE KIRI > NODE KEY
+                    JIKA TIDAK MAKA BREAK
+                */
                 if (leftVal > keyVal) {
                     Node *temp = left;
                     left = left->prev;
                     this->swapNode(temp, key);
-                } else { break; }
+                } else {
+                    break;
+                }
             }
-            left = (left) ? left->next: head;
+
+            /*
+                JIKA LEFT NULL MAKA LEFT = HEAD
+                JIKA TIDAK NULL MAKA LEFT = LEFT->NEXT
+                LALU KITA SWAP LEFT DAN KEY
+             */
+            left = (left) ? left->next : head;
             this->swapNode(left, key);
         }
     }
@@ -266,26 +301,30 @@ public:
     /*  <================================= ALGORITMA SEARCHING    =====================================> */
     /*  <================================= ALGORITMA SEARCHING    =====================================> */
 
-    void cari_nama(const string &type, const string &data) {
-        int i;
-        Node *cur = head;
-        while (cur) {
-            string &value = (type == "nama") ? cur->value->nama : cur->value->penyakit;
-            if (value == data) {
-                std::cout << "<=== DATA  DITEMUKAN!!! ===>\n";
-                std::cout << "Nama Pasien : " << cur->value->nama << '\n';
-                std::cout << "Umur Pasien : " << cur->value->umur << '\n';
-                std::cout << "Penyakit Pasien : " << cur->value->penyakit << '\n';
-                std::cout << "Nomor Pasien : " << cur->value->nomor << '\n';
-                std::cout << "====================================\n";
-                return;
-            }
-            cur = cur->next;
+    void cari_nama(string type, string target, Node *cur = nullptr, bool found = false) {
+        if (!cur)
+            cur = head;
+        string &value = (type == "nama") ? cur->value->nama : cur->value->penyakit;
+
+        if (value == target) {
+            std::cout << "<==== DATA  DITEMUKAN!!! ===>\n";
+            std::cout << "Nama Pasien : " << cur->value->nama << '\n';
+            std::cout << "Umur Pasien : " << cur->value->umur << '\n';
+            std::cout << "Penyakit Pasien : " << cur->value->penyakit << '\n';
+            std::cout << "Nomor Pasien : " << cur->value->nomor << '\n';
+            std::cout << "====================================\n";
+            found = true;
         }
-        std::cout << "Data Pasien Tidak Ditemukan!!!\n";
+
+        if (cur->next) {
+            //rekursif
+            cari_nama(type, target, cur->next, found);
+        } else if (!found) {
+            std::cout << "Data Pasien Tidak Ditemukan!!!\n";
+        }
     }
 
-    void cari_data(const string &type, const int value) {
+    void cari_data(string type, int value) {
         Node *cur = head;
         while (cur) {
             int data = (type == "umur") ? cur->value->umur : cur->value->nomor;
@@ -300,5 +339,96 @@ public:
             cur = cur->next;
         }
         std::cout << "Data Pasien Tidak Ditemukan!!!\n";
+    }
+
+    // <==================== BINARY SEARCH =======================>
+    // <==================== BINARY SEARCH =======================>
+    // <==================== BINARY SEARCH =======================>
+
+    // UNTUK MENDAPATKAN NODE TENGAH
+    Node *getMid(Node *&left, Node *&right) {
+        // JIKA LEFT = RIGHT ATAU LEFT->NEXT = RIGHT MAKA RETURN LEFT
+        if (left == right or left->next == right) {
+            return left;
+        }
+
+        // ASIGN VARIABEL
+        Node *kiri = left;
+        Node *kanan = left->next->next;
+        Node *temp = right->next; // TEMP UNTUK MENYIMPAN RIGHT NEXT KARENA AKAN KITA JADIKAN NULL
+        right->next = nullptr;
+
+        while (kanan) {
+            //  loop selama kanan tidak null
+            kiri = kiri->next;
+            kanan = kanan->next;
+            if (kanan) {
+                kanan = kanan->next;
+            }
+        }
+        right->next = temp;
+        return kiri;
+    }
+
+    Node *binary_search_num(string type, int target, Node *low, Node *high) {
+        while (low != high or low == high) {
+            Node *mid = getMid(low, high); // mendapatkan node tengah
+            int midval_num = (type == "umur") ? mid->value->umur : mid->value->nomor;
+
+            if (midval_num == target) {
+                return mid;
+            } else if (target > midval_num) {
+                low = mid->next;
+                if (!low) { return nullptr; }
+            } else {
+                high = mid->prev;
+                if (!high) { return nullptr; }
+            }
+        }
+        return nullptr;
+    }
+
+    Node *binary_search_str(string type, string target, Node *low, Node *high) {
+        while (low != high or low == high) {
+            Node *mid = getMid(low, high);
+            string midval_str = (type == "nama") ? mid->value->nama : mid->value->penyakit;
+
+            if (midval_str == target) {
+                return mid;
+            } else if (midval_str < target) {
+                low = mid->next;
+                if (!head) { return nullptr; }
+            } else {
+                high = mid->prev;
+                if (!head) { return nullptr; }
+            }
+        }
+        return nullptr;
+    }
+
+    void startBinarySearchNum(string type, int target) {
+        this->urutkan_data(type);
+        Node *data = binary_search_num(type, target, head, tail);
+        if (data) {
+            std::cout << "YEAY DATA KETEMU !!!\n";
+            std::cout << "Nama: " << data->value->nama << '\n';
+            std::cout << "Umur: " << data->value->umur << '\n';
+            std::cout << "Penyakit: " << data->value->penyakit << '\n';
+            std::cout << "Nomor: " << data->value->nomor << '\n';
+        } else
+            std::cout << "YAHHH DATA PASIEN GK ADA :( \n";
+    }
+
+    void startBinarySearchStr(string type, string target) {
+        this->urutkan_data(type);
+        Node *data = binary_search_str(type, target, head, tail);
+        if (data) {
+            std::cout << "YEAY DATA KETEMU !!!\n";
+            std::cout << "Nama: " << data->value->nama << '\n';
+            std::cout << "Umur: " << data->value->umur << '\n';
+            std::cout << "Penyakit: " << data->value->penyakit << '\n';
+            std::cout << "Nomor: " << data->value->nomor << '\n';
+        } else
+            std::cout << "YAHHH DATA PASIEN GK ADA :( \n";
     }
 };
