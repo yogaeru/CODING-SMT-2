@@ -5,11 +5,11 @@ struct Pasien {
     string nama, penyakit;
     int umur, nomor, index;
 
-    Pasien(const string &nama,
-           const int umur,
-           const string &penyakit,
-           const int nomor,
-           const int abjad) : nama(nama), penyakit(penyakit), umur(umur), nomor(nomor), index(abjad) {
+    Pasien(string nama,
+           int umur,
+           string penyakit,
+           int nomor,
+           int abjad) : nama(nama), penyakit(penyakit), umur(umur), nomor(nomor), index(abjad) {
     }
 };
 
@@ -37,7 +37,7 @@ public:
         }
     }
 
-    int length() const {
+    int length() {
         int count = 0;
         Node *cur = head;
 
@@ -59,10 +59,10 @@ public:
         return i;
     }
 
-    void addPasien(const string &nama,
-                   const int umur,
-                   const string &penyakit,
-                   const int nomor) {
+    void addPasien(string nama,
+                   int umur,
+                   string &penyakit,
+                   int nomor) {
         Node *pasien = new Node();
         int indexAbj = this->getAbjad(tolower(nama[0]));
         pasien->value = new Pasien(nama, umur, penyakit, nomor, indexAbj);
@@ -154,7 +154,7 @@ public:
 
     // <============================ SELECTION SORT ================================>
     // <============================ SELECTION SORT ================================>
-    void urutkan_data(const string &data = "nomor") {
+    void urutkan_data(string data = "nomor") {
         int len = this->length(); // menentukan panjang Node
 
         Node *left = head;
@@ -198,8 +198,7 @@ public:
 
     // <======================= BUBBLE SORT =====================>
     // <======================= BUBBLE SORT =====================>
-
-    void bubble_sort(const string &data = "nomor") {
+    void bubble_sort(string data = "nomor") {
         int len = this->length(); // menentukan panjang Node
         bool swapped = true;
 
@@ -242,7 +241,7 @@ public:
 
     // <======================= INSERTION SORT =====================>
     // <======================= INSERTION SORT =====================>
-    void insertion_sort(const string &data = "nomor") {
+    void insertion_sort(string data = "nomor") {
         int len = this->length(); // panjang Node
         Node *right = head->next; // Node kanan atau I
         Node *left = nullptr; // Node kiri atau J
@@ -286,7 +285,6 @@ public:
                     break;
                 }
             }
-
             /*
                 JIKA LEFT NULL MAKA LEFT = HEAD
                 JIKA TIDAK NULL MAKA LEFT = LEFT->NEXT
@@ -300,7 +298,6 @@ public:
     /*  <================================= ALGORITMA SEARCHING    =====================================> */
     /*  <================================= ALGORITMA SEARCHING    =====================================> */
     /*  <================================= ALGORITMA SEARCHING    =====================================> */
-
     void cari_nama(string type, string target, Node *cur = nullptr, bool found = false) {
         if (!cur)
             cur = head;
@@ -344,7 +341,6 @@ public:
     // <==================== BINARY SEARCH =======================>
     // <==================== BINARY SEARCH =======================>
     // <==================== BINARY SEARCH =======================>
-
     // UNTUK MENDAPATKAN NODE TENGAH
     Node *getMid(Node *&left, Node *&right) {
         // JIKA LEFT = RIGHT ATAU LEFT->NEXT = RIGHT MAKA RETURN LEFT
