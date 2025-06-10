@@ -3,48 +3,86 @@
 #include "library.cpp"
 using std::string;
 
-class graph{
-private:
-    std::vector<Data> AllData;
-public:
-    void append(string key, Node value){
-
-    }
-};
-
-class Data{
-private:
-    string key;
-    Node Value;
-public:
-    Data(string key, Node value): key(key), Value(value){}
-
-    
-};
-
-struct Node2{
+struct Node2 {
     Node2 *prev = nullptr;
     Node2 *next = nullptr;
-    Data *Value = nullptr; 
+    Node *Value = nullptr;
 };
 
-class list{
+class linked_list {
 private:
     Node2 *head, *tail;
-public:
-    list() : head(nullptr), tail(nullptr){}
 
-    void append(Data *&value){
-        Node2 *newNode = new Node2;
+public:
+    linked_list() : head(nullptr), tail(nullptr) {
+    }
+
+    void append(Node *value) {
+        Node2 *newNode = new Node2();
         newNode->Value = value;
 
-        if (!head){
+        if (!head) {
             head = newNode;
             tail = newNode;
         } else {
+            newNode->prev = tail;
             tail->next = newNode;
-            newNode ->prev = tail;
             tail = newNode;
+        }
+    }
+
+    void print() {
+        Node2 *cur = head;
+        while (cur) {
+            std::cout << cur->Value->value->nama;
+            cur = cur->next;
+            if (cur) std::cout << " -> ";
+        }
+    }
+};
+
+struct Data {
+    string key;
+    linked_list list_of_node; //list of Node
+
+    Data(const string &key): key(key) {
+    }
+};
+
+class Graph {
+private:
+    std::vector<Data> AllData;
+
+public:
+    Graph() = default;
+
+    void create_graph(database *db) {
+        Node *cur = db->begin();
+        while (cur) {
+            string &penyakit = cur->value->penyakit;
+            this->append(penyakit, cur);
+            cur = cur->next;
+        }
+    }
+
+    void append(string &key, Node *nodeVal) {
+        for (Data &key_val: AllData) {
+            if (key_val.key == key) {
+                key_val.list_of_node.append(nodeVal);
+                return;
+            }
+        }
+        Data newData(key);
+        newData.list_of_node.append(nodeVal);
+        AllData.push_back(newData);
+    }
+
+    void display() {
+        for (Data &key_val: AllData) {
+            std::cout << "[ " << key_val.key << " ] : ";
+            std::cout << "[ ";
+            key_val.list_of_node.print();
+            std::cout << " ]\n";
         }
     }
 };
