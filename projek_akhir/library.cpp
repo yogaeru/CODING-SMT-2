@@ -1,4 +1,5 @@
 #include <iostream>
+// #include "graph.cpp"
 using std::string;
 
 struct Pasien {
@@ -57,6 +58,13 @@ public:
             }
         }
         return i;
+    }
+    Node *begin() {
+        return head;
+    }
+
+    Node *back() {
+        return tail;
     }
 
     void addPasien(string nama,
@@ -427,4 +435,17 @@ public:
         } else
             std::cout << "YAHHH DATA PASIEN GK ADA :( \n";
     }
+
+    // void startGraph(){
+    //     graph *G = new graph;
+    //
+    //     Node *cur = head;
+    //     while(cur){
+    //         string penyakit = cur->value->penyakit;
+    //         G->append(penyakit, cur);
+    //         cur = cur->next;
+    //     }
+    //     G->display();
+    //
+    // }
 };

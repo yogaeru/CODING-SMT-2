@@ -1,30 +1,29 @@
 #include <iostream>
 #include <string>
-#include "library.cpp"
+#include "graph.cpp"
 using std::string;
 
-void mainMenu(database *db);
-
+void mainMenu(database *db, Graph *G);
 void nambahPasien(database *db);
-
 void bca(database *db, string type);
-
 void menuSorting(database *db);
-
 void abc(database *db, string type, string target);
-
 void menuSearch(database *db);
-
-void testingCode(database *db);
+void testingCode(database *db, Graph *G);
 
 int main() {
     database *dataPasien = new database();
-    mainMenu(dataPasien);
-    delete dataPasien;
+    Graph *G = new Graph();
+    mainMenu(dataPasien, G);
+    delete dataPasien, G;
     return 0;
 }
 
-void mainMenu(database *db) {
+
+// =============================== MAIN MENU ===================================
+// =============================== MAIN MENU ===================================
+// =============================== MAIN MENU ===================================
+void mainMenu(database *db, Graph *G) {
     string pilihan;
     while (true) {
         std::cout << "\033[2J\033[H";
@@ -38,11 +37,11 @@ void mainMenu(database *db) {
         std::cout << "6. Exit\n\n";
         std::cout << "Masukkan pilihan: ";
         std::cin >> pilihan;
+        std::cin.ignore();
 
         if (pilihan == "1") {
             nambahPasien(db);
         } else if (pilihan == "2") {
-            std::cin.ignore();
             db->print();
             std::cout << "Enter Untuk Kembali......";
             std::cin.get();
@@ -51,11 +50,14 @@ void mainMenu(database *db) {
         } else if (pilihan == "4") {
             menuSearch(db);
         } else if (pilihan == "5") {
-            std::cout << "belum ada FITUR\n";
+            // G -> create_graph(db);
+            G->display();
+            std::cout << "Enter Untuk Kembali......";
+            std::cin.get();
         } else if (pilihan == "6") {
             return;
         } else if (pilihan == "99") {
-            testingCode(db);
+            testingCode(db, G);
         } else {
             std::cout << "YAHHH PILIHAN TIDAK ADA :( \n";
         }
@@ -63,11 +65,11 @@ void mainMenu(database *db) {
 }
 
 
-// <======== MENAMBAHKAN DATA PASIEN ===========>
-// <======== MENAMBAHKAN DATA PASIEN ===========>
-// <======== MENAMBAHKAN DATA PASIEN ===========>
-// <======== MENAMBAHKAN DATA PASIEN ===========>
-// <======== MENAMBAHKAN DATA PASIEN ===========>
+// <=================================== MENAMBAHKAN DATA PASIEN ============================>
+// <=================================== MENAMBAHKAN DATA PASIEN ============================>
+// <=================================== MENAMBAHKAN DATA PASIEN ============================>
+// <=================================== MENAMBAHKAN DATA PASIEN ============================>
+// <=================================== MENAMBAHKAN DATA PASIEN ============================>
 void nambahPasien(database *db) {
     string nama, penyakit;
     char validasi;
@@ -78,7 +80,7 @@ void nambahPasien(database *db) {
         std::cout << "=================================\n";
         std::cout << "==== MENAMBAHKAN DATA PASIEN ====\n\n";
         std::cout << "Nama pasien : ";
-        std::cin.ignore();
+        // std::cin.ignore();
         std::getline(std::cin, nama);
         std::cout << "Penyakit    : ";
         std::getline(std::cin, penyakit);
@@ -105,8 +107,7 @@ void nambahPasien(database *db) {
 //====================== MENU SORTING =============================
 //====================== MENU SORTING =============================
 void menuSorting(database *db) {
-    string pilihan;
-    string target;
+    string pilihan, target;
     while (true) {
         std::cout << "\033[2J\033[H\n";
         db->print();
@@ -255,13 +256,14 @@ void abc(database *db, string type, string target) {
 // ====================================== TESTING CODE ===============================
 // ======================================== TESTING CODE ===============================
 // ======================================== TESTING CODE ===============================
-void testingCode(database *db) {
+void testingCode(database *db, Graph *G) {
     string nama[] = {"Aru", "Nana", "Ai"};
     int umur[] = {20, 21, 22};
     string penyakit[] = {"Cacar", "Batuk", "Flu"};
 
     for (int i = 0; i < 3; i++) {
         db->addPasien(nama[i], umur[i], penyakit[i], i + 2);
+        G->append(penyakit[i], db->back());
     }
 }
 
