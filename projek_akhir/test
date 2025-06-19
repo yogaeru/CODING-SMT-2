@@ -1,3 +1,68 @@
-penyakit : [nana, nanai, aru]
-batuk : [lala]
-Flu : [papa]
+penyakit : [nama]
+
+AllData = {
+    data = {
+        key = "penyakit"
+        value = {nama}
+    }
+}
+
+
+AllData = {
+    list {key, {value}}
+}
+
+class pair{
+    data value = {linked list}
+
+    void add(key, value){
+        for ( k in value ){
+            if ( k.key == key ){
+                k.value.append(value)
+            }
+            else {
+                data newData = new data(key, value)
+                value.append(newData)
+            }
+    }
+}
+
+class Data{
+    key
+    list value = {}
+}
+
+
+
+// untuk list
+
+class Node {
+    T key
+    Data value
+    Node next, prev;
+}
+
+class list{ 
+    head, tail;
+
+    void append(key, value){
+        Node newNode = new Node(key, value)
+        if (head == null){
+            head = tail = newNode
+        }
+        else{
+            tail ->next = newNode
+            newNode ->prev = tail
+            tail = newNode
+        }
+    }
+
+}
+
+
+list graph = {
+    data = {
+        key 
+        list of node = []
+    }
+}
